@@ -591,4 +591,8 @@ FOAM_FILES([
   { name: "foam/u2/view/date/DateTimePicker"},
   { name: "foam/u2/view/date/Month"},
   { name: "foam/u2/view/date/Weekday"},
+
+  { name: "foam/layout/Section" },
+  { name: "foam/layout/SectionAxiom" },
+  { name: "foam/u2/SectionedDetailView" },
 ]);
