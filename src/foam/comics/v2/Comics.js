@@ -91,7 +91,8 @@ foam.CLASS({
   requires: [
     'foam.comics.v2.DAOBrowserView',
     'foam.u2.layout.ColumnLayout',
-    'foam.u2.layout.RowLayout'
+    'foam.u2.layout.RowLayout',
+    'foam.u2.layout.Col'
   ],
   properties: [
     {
@@ -115,9 +116,11 @@ foam.CLASS({
         .add(this.slot(function(data) {
           return self.E()
             .start(self.RowLayout)
-              .start(self.ColumnLayout)
-                .start('h1').add(data.browseTitle$).end()
-                .startContext({data: self}).add(self.CREATE).endContext()
+              .start(self.ColumnLayout, {defaultConfig: {flex:1}})
+                .start(self.Col, {flex:1})
+                  .start('h1').add(data.browseTitle$).end()
+                .end()
+                  .startContext({data: self}).add(self.CREATE).endContext()
               .end()
               .add(data.slot(function(browseBorder) {
                 return self.E()
