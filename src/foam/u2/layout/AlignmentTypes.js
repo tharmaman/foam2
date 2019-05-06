@@ -7,10 +7,18 @@ foam.ENUM({
   `,
 
   values: [
-    { name: "START", label: 'Normal', },
-    { name: "END", label: 'Reverse', },
-    { name: "CENTER", label: 'Center', },
-    { name: "SPACED_AROUND", label: 'Spaced Around' },
-    { name: "SPACED_BETWEEN", label: 'Spaced Between' },
+    { name: "START", label: 'Normal', webFlexProp: 'flex-start' },
+    { name: "END", label: 'Reverse', webFlexProp: 'flex-end' },
+    { name: "CENTER", label: 'Center', webFlexProp: 'center' },
+    { name: "SPACED_AROUND", label: 'Spaced Around', webFlexProp: 'space-around' },
+    { name: "SPACED_BETWEEN", label: 'Spaced Between', webFlexProp: 'space-between' },
+  ],
+
+  properties:  [
+    {
+      class: 'String',
+      name: 'webFlexProp',
+      value: ''
+    },
   ]
 });

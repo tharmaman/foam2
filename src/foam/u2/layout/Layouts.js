@@ -62,22 +62,12 @@ foam.CLASS({
       documentation: `
         To render the proper CSS for web based on the alignment types enum.
         Will later be used to also account for mobile.
+
+        Will be applied later on, for now just having it here later on when we try
+        to implement preset values
       `,
-      expression: function(horizontalAlignmentTypes){
-        switch(horizontalAlignmentTypes){
-          case foam.u2.layout.AlignmentTypes.START:
-            return 'flex-start';
-          case foam.u2.layout.AlignmentTypes.END:
-            return 'flex-end';
-          case foam.u2.layout.AlignmentTypes.CENTER:
-            return 'center';
-          case foam.u2.layout.AlignmentTypes.SPACED_AROUND:
-            return 'space-around';
-          case foam.u2.layout.AlignmentTypes.SPACED_BETWEEN:
-            return 'space-between';
-          default:
-            return null;
-        }
+      expression: function(horizontalAlignmentTypes$webFlexProp){
+        return horizontalAlignmentTypes$webFlexProp;
       }
     }
   ],
@@ -104,9 +94,7 @@ foam.CLASS({
     function initE() {
       this.SUPER();
 
-      console.log(this.horizontalAlignmentValue);
-
-      this.addClass(this.myClass()).style({ 'justify-content': this.horizontalAlignmentValue$});
+      this.addClass(this.myClass()).style({ 'justify-content': this.horizontalAlignmentValue$ });
     }
   ]
 });
@@ -130,6 +118,7 @@ foam.CLASS({
         Define how much this column will grow (take up space) relative to the other columns
         within column layout
       `,
+      value: 1,
     },
   ],
   

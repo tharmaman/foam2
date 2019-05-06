@@ -132,18 +132,20 @@ foam.CLASS({
           return self.E()
             .start().addClass('container')
               .start(self.RowLayout)
-                .start(self.ColumnLayout, { horizontalAlignmentTypes: foam.u2.layout.AlignmentTypes.SPACED_BETWEEN })
+                .start(self.ColumnLayout)
                       .add(data.browseTitle$)
-                      .start().add(this.Col)
+                      .start(self.Col, { flex: 0 })
                         .startContext({data: self}).add(self.CREATE).endContext()
                       .end()
                 .end()
-                // .add(data.slot(function(browseBorder) {
-                //   return self.E()
-                //     .start(browseBorder)
-                //       .tag(self.DAOBrowserView, { data: data })
-                //     .end();
-                // }))
+                .add(data.slot(function(browseBorder) {
+                  return self.E()
+                    .start(browseBorder)
+                      .start(self.ColumnLayout)
+                        .tag(self.DAOBrowserView, { data: data })
+                      .end()
+                    .end()
+                }))
               .end()
             .end();
         }));
@@ -207,13 +209,15 @@ foam.CLASS({
                 this.add(q.name); // TODO: make these do something.
               });
             }))
-            .add(this.slot(function(data$browseViews) {
-              return self.E().forEach(data$browseViews, function(o) {
-                // TODO: make these do something.
-                // TODO: make these icons.
-                this.add(o.name);
-              });
-            }))
+            .start()
+              .add(this.slot(function(data$browseViews) {
+                return self.E().forEach(data$browseViews, function(o) {
+                  // TODO: make these do something.
+                  // TODO: make these icons.
+                  this.add(o.name);
+                });
+              }))
+            .end()
           .end()
           .start(this.ColumnLayout)
             .tag(self.Toolbar, { data$: self.predicate$ })
