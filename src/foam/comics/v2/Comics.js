@@ -131,7 +131,7 @@ foam.CLASS({
         .add(this.slot(function(data) {
           return self.E()
             .start().addClass('container')
-              .start(self.RowLayout, )
+              .start(self.RowLayout)
                 .start(self.ColumnLayout)
                       .add(data.browseTitle$)
                       .start(self.Col, { flex: 0 })

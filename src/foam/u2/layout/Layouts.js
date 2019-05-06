@@ -20,6 +20,40 @@ foam.CLASS({
   ],
 });
 
+// foam.CLASS({
+//   package: 'foam.u2.layout',
+//   name: 'Row',
+//   extends: 'foam.u2.Element',
+
+//   properties: [
+//     {
+//       class: 'Float',
+//       name: 'flex',
+//       documentation: `
+//         Define how much this column will grow (take up space) relative to the other columns
+//         within column layout
+//       `,
+//       value: 1,
+//     },
+//   ],
+
+//   documentation: `
+//     A layout for a group of rows layed out vertically.
+//     Was implemented to enforce display:block; to make sure elements
+//     get rendered vertically.
+//   `,
+
+//   methods: [
+//     function add() {
+//       return this.SUPER.apply(this, arguments);
+//     },
+//     function initE() {
+//       this.SUPER();
+//       this.style({ 'display': 'block;' }) // more specificity should enforce ruling
+//     }
+//   ],
+// });
+
 foam.CLASS({
   package: 'foam.u2.layout',
   name: 'ColumnLayout',
@@ -45,6 +79,11 @@ foam.CLASS({
     {
       class: 'Map',
       name: 'defaultConfig'
+    },
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'border',
+      value: { class: 'foam.u2.borders.NullBorder' }
     },
     {
       class: 'Enum',
@@ -85,7 +124,7 @@ foam.CLASS({
           this.SUPER(value);
         }
         else {
-          this.start(this.Col, this.defaultConfig).add(value).end();
+          this.start(this.Col, this.defaultConfig).start(this.border).add(value).end().end();
         }
       })
       return this;
@@ -132,7 +171,7 @@ foam.CLASS({
         'flex-grow': this.flex$,
       }
 
-      this.style(styles)
-    }
+      this.style(styles);
+    },
   ]
 });
