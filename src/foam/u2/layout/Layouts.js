@@ -38,7 +38,6 @@ foam.CLASS({
   css: `
     ^ {
       display: flex;
-      width: 100%;
     }
   `,
 
@@ -137,11 +136,11 @@ foam.CLASS({
 
       // we can make a map here based on the values
       // we can add to this list as we go on
-      // const styles = {
-      //   'flex-grow': this.flex$,
-      // }
+      const styles = {
+        'flex-grow': this.flex$,
+      }
 
-      // this.style(styles)
+      this.style(styles)
     }
   ]
 });

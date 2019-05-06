@@ -95,6 +95,14 @@ foam.CLASS({
     'foam.u2.layout.Col',
     'foam.u2.layout.AlignmentTypes'
   ],
+
+  css: `
+    .container {
+      padding: 750px;
+      background-color: red;
+    }
+  `,
+
   properties: [
     {
       class: 'FObjectProperty',
@@ -113,25 +121,24 @@ foam.CLASS({
   methods: [
     function initE() {
       var self = this;
-      this
+
+      this.addClass(this.myClass())
         .add(this.slot(function(data) {
           return self.E()
-            .start(self.RowLayout)
-              .start(self.ColumnLayout, { horizontalAlignmentTypes: foam.u2.layout.AlignmentTypes.CENTER })
-                // .start(self.ColumnLayout)
-                    .start('h1').add(data.browseTitle$).end()
-                    .startContext({data: self}).add(self.CREATE).endContext()
-                // .end()
-                // .start(self.ColumnLayout)
-                // .end()
+            .start('container')
+              .start(self.RowLayout)
+                .start(self.ColumnLayout)
+                  // .start(self.ColumnLayout)
+                      .add(data.browseTitle$)
+                      .startContext({data: self}).add(self.CREATE).endContext()
+                .end()
+                // .add(data.slot(function(browseBorder) {
+                //   return self.E()
+                //     .start(browseBorder)
+                //       .tag(self.DAOBrowserView, { data: data })
+                //     .end();
+                // }))
               .end()
-              // .start('div').add(data.slot(function(browseBorder) {
-              //   return self.E()
-              //     .start(browseBorder)
-              //       .tag(self.DAOBrowserView, { data: data })
-              //     .end();
-              // }))
-              // .end()
             .end();
         }));
     }
