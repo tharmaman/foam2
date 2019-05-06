@@ -38,6 +38,7 @@ foam.CLASS({
   css: `
     ^ {
       display: flex;
+      width: 100%;
     }
   `,
 
@@ -127,7 +128,6 @@ foam.CLASS({
         Define how much this column will grow (take up space) relative to the other columns
         within column layout
       `,
-      value: 1,
     },
   ],
   
@@ -137,11 +137,11 @@ foam.CLASS({
 
       // we can make a map here based on the values
       // we can add to this list as we go on
-      const styles = {
-        'flex-grow': this.flex$,
-      }
+      // const styles = {
+      //   'flex-grow': this.flex$,
+      // }
 
-      this.style(styles)
+      // this.style(styles)
     }
   ]
 });
