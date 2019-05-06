@@ -209,7 +209,6 @@ foam.CLASS({
                 this.add(q.name); // TODO: make these do something.
               });
             }))
-            .start()
               .add(this.slot(function(data$browseViews) {
                 return self.E().forEach(data$browseViews, function(o) {
                   // TODO: make these do something.
@@ -217,7 +216,6 @@ foam.CLASS({
                   this.add(o.name);
                 });
               }))
-            .end()
           .end()
           .start(this.ColumnLayout)
             .tag(self.Toolbar, { data$: self.predicate$ })
