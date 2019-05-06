@@ -90,7 +90,7 @@ foam.CLASS({
   ],
   requires: [
     'foam.comics.v2.DAOBrowserView',
-    'foam.u2.layout.ColumnLayout',
+    'foam.u2.layout.Cols',
     'foam.u2.layout.RowLayout',
     'foam.u2.layout.Col',
     'foam.u2.layout.AlignmentTypes',
@@ -132,7 +132,7 @@ foam.CLASS({
           return self.E()
             .start().addClass('container')
               .start(self.RowLayout)
-                .start(self.ColumnLayout)
+                .start(self.Cols)
                       .add(data.browseTitle$)
                       .start(self.Col, { flex: 0 })
                         .startContext({data: self}).add(self.CREATE).endContext()
@@ -141,7 +141,7 @@ foam.CLASS({
                 .add(data.slot(function(browseBorder) {
                   return self.E()
                     .start(browseBorder)
-                      .start(self.ColumnLayout)
+                      .start(self.Cols)
                         .tag(self.DAOBrowserView, { data: data })
                       .end()
                     .end()
@@ -159,7 +159,7 @@ foam.CLASS({
   extends: 'foam.u2.View',
   requires: [
     'foam.u2.ScrollTableView',
-    'foam.u2.layout.ColumnLayout',
+    'foam.u2.layout.Cols',
     'foam.u2.layout.RowLayout',
     'foam.u2.layout.Col',
     'foam.u2.search.Toolbar'
@@ -204,7 +204,7 @@ foam.CLASS({
       this.SUPER();
       this
         .start(this.RowLayout)
-          .start(this.ColumnLayout)
+          .start(this.Cols)
             .add(this.slot(function(data$cannedQueries) {
               return self.E().forEach(data$cannedQueries, function(q) {
                 this.add(q.name); // TODO: make these do something.
@@ -221,7 +221,7 @@ foam.CLASS({
               }))
             .end()
           .end()
-          .start(this.ColumnLayout)
+          .start(this.Cols)
             .tag(self.Toolbar, { data$: self.predicate$ })
             .start(self.Col, { flex: 0 })
               .startContext({data: self}).add(self.EXPORT).endContext()

@@ -56,7 +56,7 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.u2.layout',
-  name: 'ColumnLayout',
+  name: 'Cols',
   extends: 'foam.u2.Element',
 
   documentation: `
@@ -133,7 +133,8 @@ foam.CLASS({
     function initE() {
       this.SUPER();
 
-      this.addClass(this.myClass()).style({ 'justify-content': this.horizontalAlignmentValue$ });
+      this.addClass(this.myClass())
+        .style({ 'justify-content': this.horizontalAlignmentValue$ });
     }
   ]
 });
