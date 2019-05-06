@@ -91,7 +91,7 @@ foam.CLASS({
   requires: [
     'foam.comics.v2.DAOBrowserView',
     'foam.u2.layout.Cols',
-    'foam.u2.layout.RowLayout',
+    'foam.u2.layout.Rows',
     'foam.u2.layout.Col',
     'foam.u2.layout.AlignmentTypes',
     'foam.u2.borders.CardBorder'
@@ -131,7 +131,7 @@ foam.CLASS({
         .add(this.slot(function(data) {
           return self.E()
             .start().addClass('container')
-              .start(self.RowLayout)
+              .start(self.Rows)
                 .start(self.Cols)
                       .add(data.browseTitle$)
                       .start(self.Col, { flex: 0 })
@@ -203,7 +203,7 @@ foam.CLASS({
       var self = this;
       this.SUPER();
       this
-        .start(this.RowLayout)
+        .start(this.Rows)
           .start(this.Cols)
             .add(this.slot(function(data$cannedQueries) {
               return self.E().forEach(data$cannedQueries, function(q) {

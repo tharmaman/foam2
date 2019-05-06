@@ -1,58 +1,66 @@
 foam.CLASS({
   package: 'foam.u2.layout',
-  name: 'RowLayout',
+  name: 'Rows',
   extends: 'foam.u2.Element',
+
+  requires: [
+    'foam.u2.layout.Row',
+  ],
 
   documentation: `
     A layout for a group of rows layed out vertically.
-    Was implemented to enforce display:block; to make sure elements
-    get rendered vertically.
   `,
+
+  properties: [
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'border',
+      value: { class: 'foam.u2.borders.NullBorder' }
+    },
+  ],
 
   methods: [
     function add() {
-      return this.SUPER.apply(this, arguments);
+
+      /**
+       * Here we are checking for two cases
+       * 1. If a Col element is added (i.e. with .start(self.Col, { flex: 0.5 }), then call the super on it
+       * 2. If another element is added, then wrap it in a column with default configuration
+       */
+      [...arguments].forEach(value => {
+        if ( this.Row.isInstance(value) ) {
+          this.SUPER(value);
+        }
+        else {
+          this.start(this.Row, this.defaultConfig).start(this.border).add(value).end().end();
+        }
+      })
+      return this;
     },
+
+    function initE() {
+      this.SUPER();
+      this.addClass(this.myClass())
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.u2.layout',
+  name: 'Row',
+  extends: 'foam.u2.Element',
+
+  documentation: `
+    An individual column row within a group of rows.
+  `,
+
+  methods: [
     function initE() {
       this.SUPER();
       this.style({ 'display': 'block;' }) // more specificity should enforce ruling
     }
   ],
 });
-
-// foam.CLASS({
-//   package: 'foam.u2.layout',
-//   name: 'Row',
-//   extends: 'foam.u2.Element',
-
-//   properties: [
-//     {
-//       class: 'Float',
-//       name: 'flex',
-//       documentation: `
-//         Define how much this column will grow (take up space) relative to the other columns
-//         within column layout
-//       `,
-//       value: 1,
-//     },
-//   ],
-
-//   documentation: `
-//     A layout for a group of rows layed out vertically.
-//     Was implemented to enforce display:block; to make sure elements
-//     get rendered vertically.
-//   `,
-
-//   methods: [
-//     function add() {
-//       return this.SUPER.apply(this, arguments);
-//     },
-//     function initE() {
-//       this.SUPER();
-//       this.style({ 'display': 'block;' }) // more specificity should enforce ruling
-//     }
-//   ],
-// });
 
 foam.CLASS({
   package: 'foam.u2.layout',
@@ -61,7 +69,7 @@ foam.CLASS({
 
   documentation: `
     A layout for a group of columns layed out horizontally.
-    A row can have numerous ColumnLayout elements.
+    A row or div can contain numerous Cols elements
   `,
 
   requires: [
@@ -146,8 +154,6 @@ foam.CLASS({
 
   documentation: `
     An individual column element within a group of columns.
-    Can be configured by default in ColumnLayout through defaultConfig
-    Or instantiated for more customized configuration by defining it's properties
   `,
 
   properties: [
