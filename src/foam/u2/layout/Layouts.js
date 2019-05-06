@@ -54,7 +54,7 @@ foam.CLASS({
         An enum on horizontal alignment types
         (i.e. on the web, this follows the 'justify-content' CSS property)
       `,
-      value: foam.u2.layout.AlignmentTypes.START,
+      value: null,
     },
     {
       class: 'String',
@@ -76,7 +76,7 @@ foam.CLASS({
           case foam.u2.layout.AlignmentTypes.SPACED_BETWEEN:
             return 'space-between';
           default:
-            return 'flex-start';
+            return null;
         }
       }
     }
@@ -103,6 +103,9 @@ foam.CLASS({
 
     function initE() {
       this.SUPER();
+
+      console.log(this.horizontalAlignmentValue);
+
       this.addClass(this.myClass()).style({ 'justify-content': this.horizontalAlignmentValue$});
     }
   ]

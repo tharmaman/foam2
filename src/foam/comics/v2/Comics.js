@@ -98,7 +98,7 @@ foam.CLASS({
 
   css: `
     .container {
-      padding: 750px;
+      padding: 31px;
       background-color: red;
     }
   `,
@@ -120,17 +120,23 @@ foam.CLASS({
   ],
   methods: [
     function initE() {
+      this.SUPER();
+
+      this
+        .addClass(this.myClass())
+
       var self = this;
 
       this.addClass(this.myClass())
         .add(this.slot(function(data) {
           return self.E()
-            .start('container')
+            .start().addClass('container')
               .start(self.RowLayout)
-                .start(self.ColumnLayout)
-                  // .start(self.ColumnLayout)
+                .start(self.ColumnLayout, { horizontalAlignmentTypes: foam.u2.layout.AlignmentTypes.SPACED_BETWEEN })
                       .add(data.browseTitle$)
-                      .startContext({data: self}).add(self.CREATE).endContext()
+                      .start().add(this.Col)
+                        .startContext({data: self}).add(self.CREATE).endContext()
+                      .end()
                 .end()
                 // .add(data.slot(function(browseBorder) {
                 //   return self.E()
