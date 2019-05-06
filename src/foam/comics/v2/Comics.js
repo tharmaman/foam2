@@ -116,8 +116,8 @@ foam.CLASS({
         .add(this.slot(function(data) {
           return self.E()
             .start(self.RowLayout)
-              .start(self.ColumnLayout, {defaultConfig: {flex:1}})
-                .start(self.Col, {flex:1})
+              .start(self.ColumnLayout, {defaultConfig: { flex:1,} })
+                .start(self.Col, { flex: 0.5 })
                   .start('h1').add(data.browseTitle$).end()
                 .end()
                   .startContext({data: self}).add(self.CREATE).endContext()
