@@ -1,9 +1,9 @@
 foam.ENUM({
   package: 'foam.u2.layout',
-  name: 'RowAlignmentTypes',
+  name: 'AlignmentTypes',
 
   documentation: `
-      An enum for basic row alignment types
+      An enum for the alignment types of a ~row of columns~
   `,
 
   values: [
