@@ -84,6 +84,12 @@ foam.CLASS({
 
   methods: [
     function add() {
+
+      /**
+       * Here we are checking for two cases
+       * 1. If a Col element is added (i.e. with .start(self.Col, { flex: 0.5 }), then call the super on it
+       * 2. If another element is added, then wrap it in a column with default configuration
+       */
       [...arguments].forEach(value => {
         if ( this.Col.isInstance(value) ) {
           this.SUPER(value);
@@ -130,6 +136,7 @@ foam.CLASS({
       this.SUPER();
 
       // we can make a map here based on the values
+      // we can add to this list as we go on
       const styles = {
         'flex-grow': this.flex$,
       }
