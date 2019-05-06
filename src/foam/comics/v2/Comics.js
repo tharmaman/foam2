@@ -93,13 +93,13 @@ foam.CLASS({
     'foam.u2.layout.ColumnLayout',
     'foam.u2.layout.RowLayout',
     'foam.u2.layout.Col',
-    'foam.u2.layout.AlignmentTypes'
+    'foam.u2.layout.AlignmentTypes',
+    'foam.u2.borders.CardBorder'
   ],
 
   css: `
     .container {
       padding: 31px;
-      background-color: red;
     }
   `,
 
@@ -131,7 +131,7 @@ foam.CLASS({
         .add(this.slot(function(data) {
           return self.E()
             .start().addClass('container')
-              .start(self.RowLayout)
+              .start(self.RowLayout, )
                 .start(self.ColumnLayout)
                       .add(data.browseTitle$)
                       .start(self.Col, { flex: 0 })
@@ -161,6 +161,7 @@ foam.CLASS({
     'foam.u2.ScrollTableView',
     'foam.u2.layout.ColumnLayout',
     'foam.u2.layout.RowLayout',
+    'foam.u2.layout.Col',
     'foam.u2.search.Toolbar'
   ],
   properties: [
@@ -209,17 +210,22 @@ foam.CLASS({
                 this.add(q.name); // TODO: make these do something.
               });
             }))
+            .start(self.Col, { flex: 0 })
               .add(this.slot(function(data$browseViews) {
-                return self.E().forEach(data$browseViews, function(o) {
+                return self.E().
+                forEach(data$browseViews, function(o) {
                   // TODO: make these do something.
                   // TODO: make these icons.
                   this.add(o.name);
                 });
               }))
+            .end()
           .end()
           .start(this.ColumnLayout)
             .tag(self.Toolbar, { data$: self.predicate$ })
-            .startContext({data: self}).add(self.EXPORT).endContext()
+            .start(self.Col, { flex: 0 })
+              .startContext({data: self}).add(self.EXPORT).endContext()
+            .end()
           .end()
           .add(self.slot(function(browseView) {
             return self.E().tag(browseView, {
