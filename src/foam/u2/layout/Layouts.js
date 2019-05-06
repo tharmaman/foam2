@@ -61,15 +61,36 @@ foam.CLASS({
   name: 'Col',
   extends: 'foam.u2.Element',
 
+  requires: [
+    'foam.u2.layout.AlignmentTypes',
+  ],
+
   properties: [
     {
       class: 'Float',
-      name: 'flex'
+      name: 'flex',
+      value: 1,
     },
     {
       class: 'String',
-      name: 'alignment'
-    },
+      name: 'alignmentValue',
+      expression: function(rowAlignment){
+        switch(rowAlignment){
+          case foam.u2.layout.AlignmentTypes.START:
+            return 'flex-start';
+          case foam.u2.layout.AlignmentTypes.END:
+            return 'flex-end';
+          case foam.u2.layout.AlignmentTypes.CENTER:
+            return 'center';
+          case foam.u2.layout.AlignmentTypes.SPACED_AROUND:
+            return 'space-around';
+          case foam.u2.layout.AlignmentTypes.SPACED_BETWEEN:
+            return 'space-between';
+          default:
+            return 'flex-start';
+        }
+      }
+    }
   ],
   methods: [
     function initE() {
@@ -77,6 +98,7 @@ foam.CLASS({
 
       console.log(this);
       console.log(this.flex$);
+      console.log(this.)
 
       // we can make a map here based on the values
 
