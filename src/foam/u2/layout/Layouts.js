@@ -3,13 +3,19 @@ foam.CLASS({
   name: 'RowLayout',
   extends: 'foam.u2.Element',
 
+  documentation: `
+    A layout for a group of rows layed out vertically.
+    Was implemented to enforce display:block; to make sure elements
+    get rendered vertically.
+  `,
+
   methods: [
     function add() {
       return this.SUPER.apply(this, arguments);
     },
     function initE() {
       this.SUPER();
-      this.style({ 'display': 'block;' }) // more specificity should enforce
+      this.style({ 'display': 'block;' }) // more specificity should enforce ruling
     }
   ],
 });
@@ -18,64 +24,47 @@ foam.CLASS({
   package: 'foam.u2.layout',
   name: 'ColumnLayout',
   extends: 'foam.u2.Element',
+
+  documentation: `
+    A layout for a group of columns layed out horizontally.
+    A row can have numerous ColumnLayout elements.
+  `,
+
   requires: [
-    'foam.u2.layout.Col'
+    'foam.u2.layout.Col',
+    'foam.u2.layout.AlignmentTypes',
   ],
-  properties: [
-    {
-      class: 'Map',
-      name: 'defaultConfig'
-    }
-  ],
+
   css: `
     ^ {
       display: flex;
     }
   `,
-  methods: [
-    function add() {
-      [...arguments].forEach(value => {
-        console.log(value);
-        if ( this.Col.isInstance(value) ) {
-          console.log('inside is instance');
-          console.log(value);
-          this.SUPER(value);
-        }
-        else {
-          console.log('inside else is instance');
-          this.start(this.Col, this.defaultConfig).add(value).end();
-        }
-      })
-      return this;
-    },
-
-    function initE() {
-      this.SUPER();
-      this.addClass(this.myClass());
-    }
-  ]
-});
-
-foam.CLASS({
-  package: 'foam.u2.layout',
-  name: 'Col',
-  extends: 'foam.u2.Element',
-
-  requires: [
-    'foam.u2.layout.AlignmentTypes',
-  ],
 
   properties: [
     {
-      class: 'Float',
-      name: 'flex',
-      value: 1,
+      class: 'Map',
+      name: 'defaultConfig'
+    },
+    {
+      class: 'Enum',
+      of: 'foam.u2.layout.AlignmentTypes',
+      name: 'horizontalAlignmentTypes',
+      documentation: `
+        An enum on horizontal alignment types
+        (i.e. on the web, this follows the 'justify-content' CSS property)
+      `,
+      value: foam.u2.layout.AlignmentTypes.START,
     },
     {
       class: 'String',
-      name: 'alignmentValue',
-      expression: function(rowAlignment){
-        switch(rowAlignment){
+      name: 'horizontalAlignmentValue',
+      documentation: `
+        To render the proper CSS for web based on the alignment types enum.
+        Will later be used to also account for mobile.
+      `,
+      expression: function(horizontalAlignmentTypes){
+        switch(horizontalAlignmentTypes){
           case foam.u2.layout.AlignmentTypes.START:
             return 'flex-start';
           case foam.u2.layout.AlignmentTypes.END:
@@ -92,17 +81,60 @@ foam.CLASS({
       }
     }
   ],
+
+  methods: [
+    function add() {
+      [...arguments].forEach(value => {
+        if ( this.Col.isInstance(value) ) {
+          this.SUPER(value);
+        }
+        else {
+          this.start(this.Col, this.defaultConfig).add(value).end();
+        }
+      })
+      return this;
+    },
+
+    function initE() {
+      this.SUPER();
+      this.addClass(this.myClass()).style({ 'justify-content': this.horizontalAlignmentValue$});
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.u2.layout',
+  name: 'Col',
+  extends: 'foam.u2.Element',
+
+  documentation: `
+    An individual column element within a group of columns.
+    Can be configured by default in ColumnLayout through defaultConfig
+    Or instantiated for more customized configuration by defining it's properties
+  `,
+
+  properties: [
+    {
+      class: 'Float',
+      name: 'flex',
+      documentation: `
+        Define how much this column will grow (take up space) relative to the other columns
+        within column layout
+      `,
+      value: 1,
+    },
+  ],
+  
   methods: [
     function initE() {
       this.SUPER();
 
-      console.log(this);
-      console.log(this.flex$);
-      console.log(this.)
-
       // we can make a map here based on the values
+      const styles = {
+        'flex-grow': this.flex$,
+      }
 
-      this.style({ 'flex-grow': this.flex$ })
+      this.style(styles)
     }
   ]
 });
