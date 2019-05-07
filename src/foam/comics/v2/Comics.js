@@ -211,26 +211,27 @@ foam.CLASS({
         .start(this.Rows)
           .start(this.Cols)
             .add(this.slot(function(data$cannedQueries) {
-              return self.E().forEach(data$cannedQueries, function(q) {
-                this.add(q.name); // TODO: make these do something.
-              });
+              return self.E()
+                .start(this.Cols)
+                  .forEach(data$cannedQueries, function(q) {
+                    this.add(q.name); // TODO: make these do something.
+                  })
+                .end()
             }))
-            .start(self.Col)
-              .add(this.slot(function(data$browseViews) {
-                return self.E().
-                forEach(data$browseViews, function(o) {
-                  // TODO: make these do something.
-                  // TODO: make these icons.
-                  this.add(o.name);
-                });
-              }))
-            .end()
+            .add(this.slot(function(data$browseViews) {
+              return self.E()
+                .start(this.Cols)
+                  .forEach(data$browseViews, function(o) {
+                    // TODO: make these do something.
+                    // TODO: make these icons.
+                    this.add(o.name);
+                  })
+                .end()
+            }))
           .end()
           .start(this.Cols)
             .tag(self.Toolbar, { data$: self.predicate$ })
-            .start(self.Col)
-              .startContext({data: self}).add(self.EXPORT).endContext()
-            .end()
+            .startContext({data: self}).add(self.EXPORT).endContext()
           .end()
           .add(self.slot(function(browseView) {
             return self.E().tag(browseView, {
