@@ -21,7 +21,8 @@ foam.CLASS({
     },
     {
       class: 'Int',
-      name: 'order'
+      name: 'order',
+      required: true,
     },
     {
       class: 'Function',
