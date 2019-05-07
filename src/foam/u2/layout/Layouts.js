@@ -176,7 +176,6 @@ foam.CLASS({
           this.SUPER(value);
         }
         else {
-          console.log(this.defaultChildConfig);
           this
             .start(this.Col, this.defaultChildConfig)
               .start(this.border)
@@ -214,23 +213,18 @@ foam.CLASS({
         Defines how much this specific column will grow (take up space) relative 
         to the other Col elements within its Cols group
       `,
+      value: 0,
     },
   ],
   
   methods: [
     function initE() {
-      console.log(this);
-
       this.SUPER();
 
       // we can add to this list as we go on when we have more style properties to consider
       const styles = {
         'flex-grow': this.flex$,
       }
-
-      console.log(this.flex);
-
-      console.log(styles);
 
       this.style(styles);
     },
