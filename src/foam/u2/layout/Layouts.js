@@ -107,6 +107,8 @@ foam.CLASS({
     function initE() {
       this.SUPER();
 
+      this.addClass(this.myClass())
+
       // we can add to this list as we go on when we have more style properties to consider
       const styles = {
         'flex-grow': this.flex$,
@@ -220,6 +222,8 @@ foam.CLASS({
   methods: [
     function initE() {
       this.SUPER();
+
+      this.addClass(this.myClass())
 
       // we can add to this list as we go on when we have more style properties to consider
       const styles = {
