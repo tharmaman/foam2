@@ -142,7 +142,7 @@ foam.CLASS({
         .add(this.slot(function(data) {
           return self.E()
             .start(self.Rows)
-              .start(self.Cols)
+              .start(self.Cols, { defaultChildConfig: { flex: 1.0 } })
                 .add(data.browseTitle$)
                 .start(self.Col)
                   .startContext({data: self}).add(self.CREATE).endContext()

@@ -11,22 +11,62 @@ foam.CLASS({
     The parent for a group of rows (laid out vertically)
   `,
 
+  /**
+   * NOTE: For here we set the flex-direction to column because each Row
+   * is laid out VERTICALLY 
+   */
+  css: `
+    ^ {
+      display: flex;
+      flex-direction: column;
+    }
+  `,
+
+  properties: [
+    {
+      class: 'Map',
+      name: 'defaultChildConfig',
+    },
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'border',
+      value: { class: 'foam.u2.borders.NullBorder' }
+    },
+    {
+      class: 'Enum',
+      of: 'foam.u2.layout.AlignmentType',
+      name: 'alignmentType',
+      value: foam.u2.layout.AlignmentType.SPACE_BETWEEN,
+    },
+    {
+      class: 'String',
+      name: 'alignmentValue',
+      documentation: `
+        To render the proper CSS for web based on the alignment types enum.
+        Will later be used to also account for mobile.
+      `,
+      expression: function(alignmentType$webFlexProp){
+        return alignmentType$webFlexProp;
+      }
+    }
+  ],
+
   methods: [
+    /**
+     * This expects all child elements to be instances of foam.u2.layout.Col 
+     * so we override the add method to enforce this.
+     */
     function add() {
-      /**
-       * FIXME: Breaks as it becomes one whole row element
-       * Here we are checking for two cases
-       * 1. If a Row element is added, then call the super on it
-       * 2. If another element is added, then wrap it in a Row element with default configuration
-       */ 
       [...arguments].forEach(value => {
         if ( this.Row.isInstance(value) ) {
           this.SUPER(value);
         }
         else {
           this
-            .start(this.Row)
+            .start(this.Row, this.defaultChildConfig)
+              .start(this.border)
                 .add(value)
+              .end()
             .end();
         }
       })
@@ -35,11 +75,13 @@ foam.CLASS({
 
     function initE() {
       this.SUPER();
+
+      this.addClass(this.myClass())
+        .style({ 'justify-content': this.alignmentValue$ });
     }
   ]
 });
 
-// FIXME: Convert this to flex just like a col
 foam.CLASS({
   package: 'foam.u2.layout',
   name: 'Row',
@@ -49,9 +91,28 @@ foam.CLASS({
     An individual row element within a group of rows.
   `,
 
+  properties: [
+    {
+      class: 'Float',
+      name: 'flex',
+      documentation: `
+        Defines how much this specific column will grow (take up space) relative 
+        to the other Row elements within its Rows group
+      `,
+      value: 0
+    },
+  ],
+
   methods: [
     function initE() {
-      this.style({ 'display': 'block' }) // more specificity should enforce ruling
+      this.SUPER();
+
+      // we can add to this list as we go on when we have more style properties to consider
+      const styles = {
+        'flex-grow': this.flex$,
+      }
+
+      this.style(styles);
     }
   ],
 });
@@ -97,9 +158,6 @@ foam.CLASS({
       documentation: `
         To render the proper CSS for web based on the alignment types enum.
         Will later be used to also account for mobile.
-
-        NOTE: Added support for now to hedge for the future, but we will
-        use the direct flex columning as shown in foam.comics.v2.Comics for now
       `,
       expression: function(alignmentType$webFlexProp){
         return alignmentType$webFlexProp;
@@ -108,20 +166,19 @@ foam.CLASS({
   ],
 
   methods: [
+    /**
+     * This expects all child elements to be instances of foam.u2.layout.Col 
+     * so we override the add method to enforce this.
+     */
     function add() {
-
-      /**
-       * Here we are checking for two cases
-       * 1. If a Col element is added, then call the super on it
-       * 2. If another element is added, then wrap it in a Col element with default configuration
-       */
       [...arguments].forEach(value => {
         if ( this.Col.isInstance(value) ) {
           this.SUPER(value);
         }
         else {
+          console.log(this.defaultChildConfig);
           this
-            .start(this.Col, this.defaultConfig)
+            .start(this.Col, this.defaultChildConfig)
               .start(this.border)
                 .add(value)
               .end()
@@ -155,21 +212,25 @@ foam.CLASS({
       name: 'flex',
       documentation: `
         Defines how much this specific column will grow (take up space) relative 
-        to the other Col elements in the Cols group
+        to the other Col elements within its Cols group
       `,
-      value: 0
     },
   ],
   
   methods: [
     function initE() {
+      console.log(this);
+
       this.SUPER();
 
-      // we can make a map here based on the values
-      // we can add to this list as we go on
+      // we can add to this list as we go on when we have more style properties to consider
       const styles = {
         'flex-grow': this.flex$,
       }
+
+      console.log(this.flex);
+
+      console.log(styles);
 
       this.style(styles);
     },
