@@ -93,7 +93,6 @@ foam.CLASS({
     'foam.u2.layout.Cols',
     'foam.u2.layout.Rows',
     'foam.u2.layout.Col',
-    'foam.u2.layout.Row',
     'foam.u2.layout.AlignmentTypes',
     'foam.u2.borders.CardBorder'
   ],
@@ -158,7 +157,7 @@ foam.CLASS({
   requires: [
     'foam.u2.ScrollTableView',
     'foam.u2.layout.Cols',
-    'foam.u2.layout.RowLayout',
+    'foam.u2.layout.Rows',
     'foam.u2.layout.Col',
     'foam.u2.search.Toolbar'
   ],
