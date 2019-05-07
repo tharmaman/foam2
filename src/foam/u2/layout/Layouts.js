@@ -11,35 +11,23 @@ foam.CLASS({
     A layout for a group of rows layed out vertically.
   `,
 
-  properties: [
-    {
-      class: 'foam.u2.ViewSpec',
-      name: 'border',
-      value: { class: 'foam.u2.borders.NullBorder' }
-    },
-  ],
-
   methods: [
     function add() {
-
       /**
-       * ! There is a bug when rendering this
+       * ! Trying to add a border like with Col breaks the row, we can look into later
+       * ! As card rows aren't probable right now
        * Here we are checking for two cases
        * 1. If a Row element is added, then call the super on it
        * 2. If another element is added, then wrap it in a Row element with default configuration
        */
       [...arguments].forEach(value => {
         if ( this.Row.isInstance(value) ) {
-          console.log('Inside row is instance');
           this.SUPER(value);
         }
         else {
-          console.log('Inside row is not instance');
           this
             .start(this.Row)
-              .start(this.border)
                 .add(value)
-              .end()
             .end();
         }
       })
@@ -48,7 +36,6 @@ foam.CLASS({
 
     function initE() {
       this.SUPER();
-      this.addClass(this.myClass())
     }
   ]
 });
@@ -64,7 +51,6 @@ foam.CLASS({
 
   methods: [
     function initE() {
-      this.SUPER();
       this.style({ 'display': 'block' }) // more specificity should enforce ruling
     }
   ],
@@ -118,8 +104,8 @@ foam.CLASS({
         To render the proper CSS for web based on the alignment types enum.
         Will later be used to also account for mobile.
 
-        Will be applied later on, for now just having it here later on when we try
-        to implement preset values
+        NOTE: Added support for now to hedge for the future, but we will
+        use the direct flex columning as shown in foam.comics.v2.Comics for now
       `,
       expression: function(horizontalAlignmentTypes$webFlexProp){
         return horizontalAlignmentTypes$webFlexProp;
@@ -140,7 +126,17 @@ foam.CLASS({
           this.SUPER(value);
         }
         else {
-          this.start(this.Col, this.defaultConfig).start(this.border).add(value).end().end();
+          // conditionally add isAlignmentAdded to defaultConfig if horizontal alignment was specified
+          if (this.horizontalAlignmentTypes){
+            this.defaultConfig.isAlignmentActivated = true;
+          }
+
+          this
+            .start(this.Col, this.defaultConfig)
+              .start(this.border)
+                .add(value)
+              .end()
+            .end();
         }
       })
       return this;
@@ -149,8 +145,13 @@ foam.CLASS({
     function initE() {
       this.SUPER();
 
-      this.addClass(this.myClass())
-        .style({ 'justify-content': this.horizontalAlignmentValue$ });
+      // if horizontal alignment was specified
+      if (this.horizontalAlignmentValue) {
+        this.addClass(this.myClass())
+          .style({ 'justify-content': this.horizontalAlignmentValue$ });
+      } else {
+        this.addClass(this.myClass())
+      }
     }
   ]
 });
@@ -172,8 +173,15 @@ foam.CLASS({
         Define how much this column will grow (take up space) relative to the other columns
         within column layout
       `,
-      value: 1,
+      expression: function(isAlignmentActivated){
+        return isAlignmentActivated ? 0 : 1;
+      }
     },
+    {
+      class: 'Boolean',
+      name: 'isAlignmentActivated',
+      value: false,
+    }
   ],
   
   methods: [
