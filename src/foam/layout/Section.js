@@ -14,8 +14,18 @@ foam.CLASS({
       value: function() { return true; }
     },
     {
-      class: 'Map',
-      name: 'detailViewArgs'
+      class: 'String',
+      name: 'title'
+    },
+    {
+      class:  'FObjectArray',
+      of: 'foam.core.Property',
+      name: 'properties'
+    },
+    {
+      class: 'FObjectArray',
+      of: 'foam.core.Action',
+      name: 'actions'
     }
   ]
 });

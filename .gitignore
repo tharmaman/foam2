@@ -27,3 +27,4 @@ logs/logs
 src/cronjobs
 src/notifications
 src/ruleHistory
+src/agentJunctions

@@ -1,87 +1,58 @@
 /**
  * @license
- * Copyright 2019 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright 2019 The FOAM Authors. All Rights Reserved.
+ * http://www.apache.org/licenses/LICENSE-2.0
  */
 
 foam.CLASS({
   package: 'foam.u2',
   name: 'SectionedDetailPropertyView',
-  extends: 'foam.u2.Element',
+  extends: 'foam.u2.View',
 
-  documentation: 'View for one row/property of a DetailView.',
+  documentation: `
+    View for one property of a SectionedDetailView.
+  `,
 
-  imports: [
-    'auth'
+  requires: [
+    'foam.u2.layout.Rows',
+    'foam.u2.layout.Cols',
+    'foam.u2.layout.Col'
   ],
 
   properties: [
     'prop',
-    {
-      name: 'label',
-      factory: function() { return this.prop.label }
-    }
   ],
 
-  css: `
-    .foam-u2-PropertyView-label {
-      color: #444;
-      display: block;
-      float: left;
-      font-size: 13px;
-      padding: 4px 8px 4px 8px;
-      text-align: left;
-      vertical-align: top;
-      white-space: nowrap;
-    }
-    .foam-u2-PropertyView-view {
-      padding: 2px 8px 2px 6px;
-    }
-    .foam-u2-PropertyView-units  {
-      color: #444;
-      font-size: 12px;
-      padding: 4px;
-      text-align: right;
-    }
-  `,
-
   methods: [
-    async function initE() {
-      // var prop = this.prop;
+    function initE() {
+      var self = this;
+      this.SUPER();
 
-      // if ( prop && prop.permissionRequired )  {
-      //   var propName = prop.name.toLowerCase();
-      //   var clsName  = prop.forClass_;
-      //   clsName = clsName.substring(clsName.lastIndexOf('.') + 1).toLowerCase();
-      //   var writePerm = await this.auth.check(null, `${clsName}.rw.${propName}`);
-      //   if ( ! writePerm ) {
-      //     var readPerm = await this.auth.check(null, `${clsName}.ro.${propName}`);
-      //     prop.visibility = readPerm ? foam.u2.Visibility.RO : foam.u2.Visibility.HIDDEN;
-      //   }
-      // }
+      this.addClass(this.myClass())
 
-      // TODO: check/make visibility and permissions work together
+        
+        .add(this.slot(function(prop) {
+        var errorSlot = self.slot(function(data, prop$validateObj){
+          return data && prop$validateObj && data.slot(prop$validateObj);
+        });
 
-      this.
-        show(prop.createVisibilityFor(this.__context__.data$).map(function(m) { return m != foam.u2.Visibility.HIDDEN; })).
-        addClass('foam-u2-PropertyView').
-        addClass('foam-u2-PropertyView-prop-' + prop.name).
-        start('td').addClass('foam-u2-PropertyView-label').add(this.label).end().
-        start('td').addClass('foam-u2-PropertyView-view').add(
-          prop,
-          prop.units && this.E('span').addClass('foam-u2-PropertyView-units').add(' ', prop.units)).
-        end();
+        /**
+         * FIXME: When you uncomment line 43 and line 49 the addition of columns breaks the layout, the 
+         * self.Rows does not get rendered and the prop.label$ gets clobbered and does not appear
+         */ 
+        return self.E()
+          .start(self.Rows)
+            // .start(self.Cols)
+            .add(prop.label$)
+              // .start(self.Col, { flex: 1 })
+                .add(prop)
+              // .end()
+              .attrs({ title: prop.help$ })
+            // .end()
+            .add(errorSlot.map((s) => {
+              return self.E().add(s);
+            }))
+      }));
     }
   ]
 });

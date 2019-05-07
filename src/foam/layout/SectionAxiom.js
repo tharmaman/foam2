@@ -14,9 +14,13 @@ foam.CLASS({
     },
     {
       class: 'String',
+      name: 'title',
+    },
+    {
+      class: 'String',
       name: 'label',
-      expression: function(name) {
-        return foam.String.capitalize(name);
+      expression: function(title) {
+        return foam.String.capitalize(title);
       }
     },
     {
