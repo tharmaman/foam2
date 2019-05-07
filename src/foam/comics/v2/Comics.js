@@ -144,7 +144,7 @@ foam.CLASS({
             .start(self.Rows)
               .start(self.Cols)
                 .add(data.browseTitle$)
-                .start(self.Col, { flex: 0 })
+                .start(self.Col)
                   .startContext({data: self}).add(self.CREATE).endContext()
                 .end()
               .end()
@@ -217,7 +217,7 @@ foam.CLASS({
                 this.add(q.name); // TODO: make these do something.
               });
             }))
-            .start(self.Col, { flex: 0 })
+            .start(self.Col)
               .add(this.slot(function(data$browseViews) {
                 return self.E().
                 forEach(data$browseViews, function(o) {
@@ -230,7 +230,7 @@ foam.CLASS({
           .end()
           .start(this.Cols)
             .tag(self.Toolbar, { data$: self.predicate$ })
-            .start(self.Col, { flex: 0 })
+            .start(self.Col)
               .startContext({data: self}).add(self.EXPORT).endContext()
             .end()
           .end()

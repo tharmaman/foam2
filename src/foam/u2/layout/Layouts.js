@@ -67,7 +67,6 @@ foam.CLASS({
 
   requires: [
     'foam.u2.layout.Col',
-    'foam.u2.layout.AlignmentTypes',
   ],
 
   css: `
@@ -88,9 +87,9 @@ foam.CLASS({
     },
     {
       class: 'Enum',
-      of: 'foam.u2.layout.AlignmentTypes',
+      of: 'foam.u2.layout.AlignmentType',
       name: 'alignmentType',
-      value: foam.u2.layout.AlignmentTypes.SPACE_BETWEEN,
+      value: foam.u2.layout.AlignmentType.SPACE_BETWEEN,
     },
     {
       class: 'String',
