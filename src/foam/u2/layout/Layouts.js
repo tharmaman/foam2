@@ -8,79 +8,24 @@ foam.CLASS({
   ],
 
   documentation: `
-    A layout for a group of rows layed out vertically.
+    The parent for a group of rows (laid out vertically)
   `,
 
-  methods: [
-    function add() {
-      /**
-       * ! Trying to add a border like with Col breaks the row, we can look into later
-       * ! As card rows aren't probable right now
-       * Here we are checking for two cases
-       * 1. If a Row element is added, then call the super on it
-       * 2. If another element is added, then wrap it in a Row element with default configuration
-       */
-      [...arguments].forEach(value => {
-        if ( this.Row.isInstance(value) ) {
-          this.SUPER(value);
-        }
-        else {
-          this
-            .start(this.Row)
-                .add(value)
-            .end();
-        }
-      })
-      return this;
-    },
-
-    function initE() {
-      this.SUPER();
-    }
-  ]
-});
-
-foam.CLASS({
-  package: 'foam.u2.layout',
-  name: 'Row',
-  extends: 'foam.u2.Element',
-
-  documentation: `
-    An individual column row within a group of rows.
-  `,
-
-  methods: [
-    function initE() {
-      this.style({ 'display': 'block' }) // more specificity should enforce ruling
-    }
-  ],
-});
-
-foam.CLASS({
-  package: 'foam.u2.layout',
-  name: 'Cols',
-  extends: 'foam.u2.Element',
-
-  documentation: `
-    A layout for a group of columns layed out horizontally.
-    A row or div can contain numerous Cols elements
-  `,
-
-  requires: [
-    'foam.u2.layout.Col',
-    'foam.u2.layout.AlignmentTypes',
-  ],
-
+  /**
+   * NOTE: For here we set the flex-direction to column because each Row
+   * is laid out VERTICALLY 
+   */
   css: `
     ^ {
       display: flex;
+      flex-direction: column;
     }
   `,
 
   properties: [
     {
       class: 'Map',
-      name: 'defaultConfig'
+      name: 'defaultChildConfig',
     },
     {
       class: 'foam.u2.ViewSpec',
@@ -89,50 +34,36 @@ foam.CLASS({
     },
     {
       class: 'Enum',
-      of: 'foam.u2.layout.AlignmentTypes',
-      name: 'horizontalAlignmentTypes',
-      documentation: `
-        An enum on horizontal alignment types
-        (i.e. on the web, this follows the 'justify-content' CSS property)
-      `,
-      value: null,
+      of: 'foam.u2.layout.AlignmentType',
+      name: 'alignmentType',
+      value: foam.u2.layout.AlignmentType.SPACE_BETWEEN,
     },
     {
       class: 'String',
-      name: 'horizontalAlignmentValue',
+      name: 'alignmentValue',
       documentation: `
         To render the proper CSS for web based on the alignment types enum.
         Will later be used to also account for mobile.
-
-        NOTE: Added support for now to hedge for the future, but we will
-        use the direct flex columning as shown in foam.comics.v2.Comics for now
       `,
-      expression: function(horizontalAlignmentTypes$webFlexProp){
-        return horizontalAlignmentTypes$webFlexProp;
+      expression: function(alignmentType$webFlexProp){
+        return alignmentType$webFlexProp;
       }
     }
   ],
 
   methods: [
+    /**
+     * This expects all child elements to be instances of foam.u2.layout.Col 
+     * so we override the add method to enforce this.
+     */
     function add() {
-
-      /**
-       * Here we are checking for two cases
-       * 1. If a Col element is added, then call the super on it
-       * 2. If another element is added, then wrap it in a Col element with default configuration
-       */
       [...arguments].forEach(value => {
-        if ( this.Col.isInstance(value) ) {
+        if ( this.Row.isInstance(value) ) {
           this.SUPER(value);
         }
         else {
-          // conditionally add isAlignmentAdded to defaultConfig if horizontal alignment was specified
-          if (this.horizontalAlignmentTypes){
-            this.defaultConfig.isAlignmentActivated = true;
-          }
-
           this
-            .start(this.Col, this.defaultConfig)
+            .start(this.Row, this.defaultChildConfig)
               .start(this.border)
                 .add(value)
               .end()
@@ -145,13 +76,124 @@ foam.CLASS({
     function initE() {
       this.SUPER();
 
-      // if horizontal alignment was specified
-      if (this.horizontalAlignmentValue) {
-        this.addClass(this.myClass())
-          .style({ 'justify-content': this.horizontalAlignmentValue$ });
-      } else {
-        this.addClass(this.myClass())
+      this.addClass(this.myClass())
+        .style({ 'justify-content': this.alignmentValue$ });
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.u2.layout',
+  name: 'Row',
+  extends: 'foam.u2.Element',
+
+  documentation: `
+    An individual row element within a group of rows.
+  `,
+
+  properties: [
+    {
+      class: 'Float',
+      name: 'flex',
+      documentation: `
+        Defines how much this specific column will grow (take up space) relative 
+        to the other Row elements within its Rows group
+      `,
+      value: 0
+    },
+  ],
+
+  methods: [
+    function initE() {
+      this.SUPER();
+
+      this.addClass(this.myClass())
+
+      // we can add to this list as we go on when we have more style properties to consider
+      const styles = {
+        'flex-grow': this.flex$,
       }
+
+      this.style(styles);
+    }
+  ],
+});
+
+foam.CLASS({
+  package: 'foam.u2.layout',
+  name: 'Cols',
+  extends: 'foam.u2.Element',
+
+  documentation: `
+    The parent for a group of columns (laid out horizontally)
+  `,
+
+  requires: [
+    'foam.u2.layout.Col',
+  ],
+
+  css: `
+    ^ {
+      display: flex;
+    }
+  `,
+
+  properties: [
+    {
+      class: 'Map',
+      name: 'defaultChildConfig'
+    },
+    {
+      class: 'foam.u2.ViewSpec',
+      name: 'border',
+      value: { class: 'foam.u2.borders.NullBorder' }
+    },
+    {
+      class: 'Enum',
+      of: 'foam.u2.layout.AlignmentType',
+      name: 'alignmentType',
+      value: foam.u2.layout.AlignmentType.SPACE_BETWEEN,
+    },
+    {
+      class: 'String',
+      name: 'alignmentValue',
+      documentation: `
+        To render the proper CSS for web based on the alignment types enum.
+        Will later be used to also account for mobile.
+      `,
+      expression: function(alignmentType$webFlexProp){
+        return alignmentType$webFlexProp;
+      }
+    }
+  ],
+
+  methods: [
+    /**
+     * This expects all child elements to be instances of foam.u2.layout.Col 
+     * so we override the add method to enforce this.
+     */
+    function add() {
+      [...arguments].forEach(value => {
+        if ( this.Col.isInstance(value) ) {
+          this.SUPER(value);
+        }
+        else {
+          this
+            .start(this.Col, this.defaultChildConfig)
+              .start(this.border)
+                .add(value)
+              .end()
+            .end();
+        }
+      })
+      return this;
+    },
+
+    function initE() {
+      this.SUPER();
+
+      this.addClass(this.myClass())
+        .style({ 'justify-content': this.alignmentValue$ });
     }
   ]
 });
@@ -170,33 +212,20 @@ foam.CLASS({
       class: 'Float',
       name: 'flex',
       documentation: `
-        Define how much this column will grow (take up space) relative to the other columns within the Cols element
+        Defines how much this specific column will grow (take up space) relative 
+        to the other Col elements within its Cols group
       `,
-      expression: function(isAlignmentActivated){
-        return isAlignmentActivated ? 0 : 1;
-      }
+      value: 0,
     },
-    {
-      class: 'Boolean',
-      name: 'isAlignmentActivated',
-      documentation: `
-        Basically automatically checks if a horizontalAlignmentTypes enum has been
-        passed, will therein disable the individual Col flex default of 1 and will
-        apply justify-content (on the web) to the Cols element instead of modifying
-        each individual Col
-
-        NOTE: As mentioned above, Added support for now to hedge for the future, but we will use the direct flex columning as shown in foam.comics.v2.Comics for now
-      `,
-      value: false,
-    }
   ],
   
   methods: [
     function initE() {
       this.SUPER();
 
-      // we can make a map here based on the values
-      // we can add to this list as we go on
+      this.addClass(this.myClass())
+
+      // we can add to this list as we go on when we have more style properties to consider
       const styles = {
         'flex-grow': this.flex$,
       }

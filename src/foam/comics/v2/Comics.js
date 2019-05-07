@@ -112,16 +112,11 @@ foam.CLASS({
     'foam.comics.v2.DAOBrowserView',
     'foam.u2.layout.Cols',
     'foam.u2.layout.Rows',
+    'foam.u2.layout.Row',
     'foam.u2.layout.Col',
     'foam.u2.layout.AlignmentTypes',
     'foam.u2.borders.CardBorder'
   ],
-
-  css: `
-    .container {
-      padding: 31px;
-    }
-  `,
 
   properties: [
     {
@@ -147,23 +142,17 @@ foam.CLASS({
       this.addClass(this.myClass())
         .add(this.slot(function(data) {
           return self.E()
-            .start().addClass('container')
-              .start(self.Rows)
-                .start(self.Cols)
-                      .add(data.browseTitle$)
-                      .start(self.Col, { flex: 0 })
-                        .startContext({data: self}).add(self.CREATE).endContext()
-                      .end()
-                .end()
-                .add(data.slot(function(browseBorder) {
-                  return self.E()
-                    .start(browseBorder)
-                      .start(self.Cols)
-                        .tag(self.DAOBrowserView, { data: data })
-                      .end()
-                    .end()
-                }))
+            .start(self.Rows)
+              .start(self.Cols)
+                .add(data.browseTitle$)
+                .startContext({data: self}).add(self.CREATE).endContext()
               .end()
+              .add(data.slot(function(browseBorder) {
+                return self.E()
+                  .start(browseBorder)
+                      .tag(self.DAOBrowserView, { data: data })
+                  .end()
+              }))
             .end();
         }));
     }
@@ -178,6 +167,7 @@ foam.CLASS({
     'foam.u2.ScrollTableView',
     'foam.u2.layout.Cols',
     'foam.u2.layout.Rows',
+    'foam.u2.layout.Row',
     'foam.u2.layout.Col',
     'foam.u2.search.Toolbar'
   ],
@@ -223,26 +213,27 @@ foam.CLASS({
         .start(this.Rows)
           .start(this.Cols)
             .add(this.slot(function(data$cannedQueries) {
-              return self.E().forEach(data$cannedQueries, function(q) {
-                this.add(q.name); // TODO: make these do something.
-              });
+              return self.E()
+                .start(this.Cols)
+                  .forEach(data$cannedQueries, function(q) {
+                    this.add(q.name); // TODO: make these do something.
+                  })
+                .end()
             }))
-            .start(self.Col, { flex: 0 })
-              .add(this.slot(function(data$browseViews) {
-                return self.E().
-                forEach(data$browseViews, function(o) {
-                  // TODO: make these do something.
-                  // TODO: make these icons.
-                  this.add(o.name);
-                });
-              }))
-            .end()
+            .add(this.slot(function(data$browseViews) {
+              return self.E()
+                .start(this.Cols)
+                  .forEach(data$browseViews, function(o) {
+                    // TODO: make these do something.
+                    // TODO: make these icons.
+                    this.add(o.name);
+                  })
+                .end()
+            }))
           .end()
           .start(this.Cols)
             .tag(self.Toolbar, { data$: self.predicate$ })
-            .start(self.Col, { flex: 0 })
-              .startContext({data: self}).add(self.EXPORT).endContext()
-            .end()
+            .startContext({data: self}).add(self.EXPORT).endContext()
           .end()
           .add(self.slot(function(browseView) {
             return self.E().tag(browseView, {
