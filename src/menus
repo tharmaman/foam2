@@ -42,3 +42,5 @@ p({"class":"foam.nanos.menu.Menu","id":"dashboard-demo","handler":{"class":"foam
 p({"class":"foam.nanos.menu.Menu","id":"sugar","label":"SUGAR","handler":{"class":"foam.nanos.menu.DAOMenu","daoKey":"sugarDAO"},"order":2000,"parent":"integration"})
 
 p({"class":"foam.nanos.menu.Menu","id":"admin.countries","handler":{"class":"foam.nanos.menu.DAOMenu2","config":{"class":"foam.comics.v2.DAOControllerConfig","daoKey":"countryDAO","browseViews":[{"class":"foam.comics.v2.BrowseView","name":"Table"}]}}})
+
+p({"class":"foam.nanos.menu.Menu","id":"admin.users","handler":{"class":"foam.nanos.menu.DAOMenu","daoKey":"userDAO","summaryView":{},"createControllerView":{},"updateView":{},"detailView":"foam.u2.SectionedDetailView"}})

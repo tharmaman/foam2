@@ -22,7 +22,7 @@ foam.CLASS({
     {
       class: 'Int',
       name: 'order',
-      required: true,
+      value: Number.MAX_VALUE,  // if no order is specified
     },
     {
       class: 'Function',
