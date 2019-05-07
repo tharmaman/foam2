@@ -1,6 +1,6 @@
 foam.ENUM({
   package: 'foam.u2.layout',
-  name: 'AlignmentTypes',
+  name: 'AlignmentType',
 
   documentation: `
       An enum of alignment types for the Layout Package

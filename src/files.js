@@ -599,6 +599,6 @@ FOAM_FILES([
   { name: "foam/u2/view/date/Weekday"},
 
   { name: "foam/comics/v2/Comics"},
-  { name: "foam/u2/layout/AlignmentTypes"},
+  { name: "foam/u2/layout/AlignmentType"},
   { name: "foam/u2/layout/Layouts"},
 ]);
