@@ -23,16 +23,24 @@ foam.CLASS({
     function add() {
 
       /**
+       * ! There is a bug when rendering this
        * Here we are checking for two cases
-       * 1. If a Col element is added (i.e. with .start(self.Col, { flex: 0.5 }), then call the super on it
-       * 2. If another element is added, then wrap it in a column with default configuration
+       * 1. If a Row element is added, then call the super on it
+       * 2. If another element is added, then wrap it in a Row element with default configuration
        */
       [...arguments].forEach(value => {
         if ( this.Row.isInstance(value) ) {
+          console.log('Inside row is instance');
           this.SUPER(value);
         }
         else {
-          this.start(this.Row, this.defaultConfig).start(this.border).add(value).end().end();
+          console.log('Inside row is not instance');
+          this
+            .start(this.Row)
+              .start(this.border)
+                .add(value)
+              .end()
+            .end();
         }
       })
       return this;
@@ -57,7 +65,7 @@ foam.CLASS({
   methods: [
     function initE() {
       this.SUPER();
-      this.style({ 'display': 'block;' }) // more specificity should enforce ruling
+      this.style({ 'display': 'block' }) // more specificity should enforce ruling
     }
   ],
 });
@@ -124,8 +132,8 @@ foam.CLASS({
 
       /**
        * Here we are checking for two cases
-       * 1. If a Col element is added (i.e. with .start(self.Col, { flex: 0.5 }), then call the super on it
-       * 2. If another element is added, then wrap it in a column with default configuration
+       * 1. If a Col element is added, then call the super on it
+       * 2. If another element is added, then wrap it in a Col element with default configuration
        */
       [...arguments].forEach(value => {
         if ( this.Col.isInstance(value) ) {
