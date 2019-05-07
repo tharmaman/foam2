@@ -117,12 +117,6 @@ foam.CLASS({
     'foam.u2.borders.CardBorder'
   ],
 
-  css: `
-    .container {
-      padding: 31px;
-    }
-  `,
-
   properties: [
     {
       class: 'FObjectProperty',
@@ -147,23 +141,19 @@ foam.CLASS({
       this.addClass(this.myClass())
         .add(this.slot(function(data) {
           return self.E()
-            .start().addClass('container')
-              .start(self.Rows)
-                .start(self.Cols)
-                      .add(data.browseTitle$)
-                      .start(self.Col, { flex: 0 })
-                        .startContext({data: self}).add(self.CREATE).endContext()
-                      .end()
+            .start(self.Rows)
+              .start(self.Cols)
+                .add(data.browseTitle$)
+                .start(self.Col, { flex: 0 })
+                  .startContext({data: self}).add(self.CREATE).endContext()
                 .end()
-                .add(data.slot(function(browseBorder) {
-                  return self.E()
-                    .start(browseBorder)
-                      .start(self.Cols)
-                        .tag(self.DAOBrowserView, { data: data })
-                      .end()
-                    .end()
-                }))
               .end()
+              .add(data.slot(function(browseBorder) {
+                return self.E()
+                  .start(browseBorder)
+                      .tag(self.DAOBrowserView, { data: data })
+                  .end()
+              }))
             .end();
         }));
     }

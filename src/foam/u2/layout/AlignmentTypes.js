@@ -3,22 +3,22 @@ foam.ENUM({
   name: 'AlignmentTypes',
 
   documentation: `
-      An enum for the alignment types of a ~row of columns~
+      An enum of alignment types for the Layout Package
   `,
 
   values: [
-    { name: "START", label: 'Normal', webFlexProp: 'flex-start' },
-    { name: "END", label: 'Reverse', webFlexProp: 'flex-end' },
-    { name: "CENTER", label: 'Center', webFlexProp: 'center' },
-    { name: "SPACED_AROUND", label: 'Spaced Around', webFlexProp: 'space-around' },
-    { name: "SPACED_BETWEEN", label: 'Spaced Between', webFlexProp: 'space-between' },
+    { name: "START", webFlexProp: 'flex-start' },
+    { name: "END", webFlexProp: 'flex-end' },
+    { name: "CENTER", webFlexProp: 'center' },
+    { name: "SPACE_AROUND", webFlexProp: 'space-around' },
+    { name: "SPACE_BETWEEN", webFlexProp: 'space-between' },
+    { name: "SPACE_EVENLY", webFlexProp: 'space-evenly' },
   ],
 
   properties:  [
     {
       class: 'String',
       name: 'webFlexProp',
-      value: ''
     },
   ]
 });

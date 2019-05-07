@@ -8,18 +8,17 @@ foam.CLASS({
   ],
 
   documentation: `
-    A layout for a group of rows layed out vertically.
+    The parent for a group of rows (laid out vertically)
   `,
 
   methods: [
     function add() {
       /**
-       * ! Trying to add a border like with Col breaks the row, we can look into later
-       * ! As card rows aren't probable right now
+       * FIXME: Breaks as it becomes one whole row element
        * Here we are checking for two cases
        * 1. If a Row element is added, then call the super on it
        * 2. If another element is added, then wrap it in a Row element with default configuration
-       */
+       */ 
       [...arguments].forEach(value => {
         if ( this.Row.isInstance(value) ) {
           this.SUPER(value);
@@ -40,13 +39,14 @@ foam.CLASS({
   ]
 });
 
+// FIXME: Convert this to flex just like a col
 foam.CLASS({
   package: 'foam.u2.layout',
   name: 'Row',
   extends: 'foam.u2.Element',
 
   documentation: `
-    An individual column row within a group of rows.
+    An individual row element within a group of rows.
   `,
 
   methods: [
@@ -62,8 +62,7 @@ foam.CLASS({
   extends: 'foam.u2.Element',
 
   documentation: `
-    A layout for a group of columns layed out horizontally.
-    A row or div can contain numerous Cols elements
+    The parent for a group of columns (laid out horizontally)
   `,
 
   requires: [
@@ -80,7 +79,7 @@ foam.CLASS({
   properties: [
     {
       class: 'Map',
-      name: 'defaultConfig'
+      name: 'defaultChildConfig'
     },
     {
       class: 'foam.u2.ViewSpec',
@@ -90,16 +89,12 @@ foam.CLASS({
     {
       class: 'Enum',
       of: 'foam.u2.layout.AlignmentTypes',
-      name: 'horizontalAlignmentTypes',
-      documentation: `
-        An enum on horizontal alignment types
-        (i.e. on the web, this follows the 'justify-content' CSS property)
-      `,
-      value: null,
+      name: 'alignmentType',
+      value: foam.u2.layout.AlignmentTypes.SPACE_BETWEEN,
     },
     {
       class: 'String',
-      name: 'horizontalAlignmentValue',
+      name: 'alignmentValue',
       documentation: `
         To render the proper CSS for web based on the alignment types enum.
         Will later be used to also account for mobile.
@@ -107,8 +102,8 @@ foam.CLASS({
         NOTE: Added support for now to hedge for the future, but we will
         use the direct flex columning as shown in foam.comics.v2.Comics for now
       `,
-      expression: function(horizontalAlignmentTypes$webFlexProp){
-        return horizontalAlignmentTypes$webFlexProp;
+      expression: function(alignmentType$webFlexProp){
+        return alignmentType$webFlexProp;
       }
     }
   ],
@@ -126,11 +121,6 @@ foam.CLASS({
           this.SUPER(value);
         }
         else {
-          // conditionally add isAlignmentAdded to defaultConfig if horizontal alignment was specified
-          if (this.horizontalAlignmentTypes){
-            this.defaultConfig.isAlignmentActivated = true;
-          }
-
           this
             .start(this.Col, this.defaultConfig)
               .start(this.border)
@@ -145,13 +135,8 @@ foam.CLASS({
     function initE() {
       this.SUPER();
 
-      // if horizontal alignment was specified
-      if (this.horizontalAlignmentValue) {
-        this.addClass(this.myClass())
-          .style({ 'justify-content': this.horizontalAlignmentValue$ });
-      } else {
-        this.addClass(this.myClass())
-      }
+      this.addClass(this.myClass())
+        .style({ 'justify-content': this.alignmentValue$ });
     }
   ]
 });
@@ -170,25 +155,11 @@ foam.CLASS({
       class: 'Float',
       name: 'flex',
       documentation: `
-        Define how much this column will grow (take up space) relative to the other columns within the Cols element
+        Defines how much this specific column will grow (take up space) relative 
+        to the other Col elements in the Cols group
       `,
-      expression: function(isAlignmentActivated){
-        return isAlignmentActivated ? 0 : 1;
-      }
+      value: 0
     },
-    {
-      class: 'Boolean',
-      name: 'isAlignmentActivated',
-      documentation: `
-        Basically automatically checks if a horizontalAlignmentTypes enum has been
-        passed, will therein disable the individual Col flex default of 1 and will
-        apply justify-content (on the web) to the Cols element instead of modifying
-        each individual Col
-
-        NOTE: As mentioned above, Added support for now to hedge for the future, but we will use the direct flex columning as shown in foam.comics.v2.Comics for now
-      `,
-      value: false,
-    }
   ],
   
   methods: [
