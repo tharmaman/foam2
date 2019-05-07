@@ -170,8 +170,7 @@ foam.CLASS({
       class: 'Float',
       name: 'flex',
       documentation: `
-        Define how much this column will grow (take up space) relative to the other columns
-        within column layout
+        Define how much this column will grow (take up space) relative to the other columns within the Cols element
       `,
       expression: function(isAlignmentActivated){
         return isAlignmentActivated ? 0 : 1;
@@ -180,6 +179,14 @@ foam.CLASS({
     {
       class: 'Boolean',
       name: 'isAlignmentActivated',
+      documentation: `
+        Basically automatically checks if a horizontalAlignmentTypes enum has been
+        passed, will therein disable the individual Col flex default of 1 and will
+        apply justify-content (on the web) to the Cols element instead of modifying
+        each individual Col
+
+        NOTE: As mentioned above, Added support for now to hedge for the future, but we will use the direct flex columning as shown in foam.comics.v2.Comics for now
+      `,
       value: false,
     }
   ],
