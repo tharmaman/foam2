@@ -21,7 +21,7 @@ foam.CLASS({
         .add(this.slot(function(sections, data) {
           if ( ! data ) return;
           return self.E()
-            .start(self.Rows, { border: foam.u2.borders.CardBorder })
+            .start(self.Rows, { border: 'foam.u2.borders.CardBorder' })
               .forEach(sections, function(s) {
                 this.start(self.Rows)
                   .start('h2').add(s.title$).end()
@@ -30,12 +30,12 @@ foam.CLASS({
                   })
                   .start(self.Cols)
                     .forEach(s.actions, function(a) {
-                      this.add(a)
+                      this.add(a);
                     })
                   .end()
-                .end()
+                .end();
               })
-            .end()
+            .end();
         }));
     }
   ]

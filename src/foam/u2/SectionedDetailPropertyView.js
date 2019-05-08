@@ -28,31 +28,25 @@ foam.CLASS({
       var self = this;
       this.SUPER();
 
-      this.addClass(this.myClass())
-
-        
+      this
+        .addClass(this.myClass())
         .add(this.slot(function(prop) {
-        var errorSlot = self.slot(function(data, prop$validateObj){
-          return data && prop$validateObj && data.slot(prop$validateObj);
-        });
-
-        /**
-         * FIXME: When you uncomment line 43 and line 49 the addition of columns breaks the layout, the 
-         * self.Rows does not get rendered and the prop.label$ gets clobbered and does not appear
-         */ 
-        return self.E()
-          .start(self.Rows)
-            // .start(self.Cols)
-            .add(prop.label$)
-              // .start(self.Col, { flex: 1 })
-                .add(prop)
-              // .end()
-              .attrs({ title: prop.help$ })
-            // .end()
-            .add(errorSlot.map((s) => {
-              return self.E().add(s);
-            }))
-      }));
+          var errorSlot = self.slot(function(data, prop$validateObj){
+            return data && prop$validateObj && data.slot(prop$validateObj);
+          });
+          return self.E()
+            .start(self.Rows)
+              .add(prop.label$)
+              .start(self.Cols)
+                .start(self.Col, { flex: 1 })
+                  .add(prop)
+                .end()
+                .add(prop.help$)
+              .end()
+              .add(errorSlot.map((s) => {
+                return self.E().add(s);
+              }));
+        }));
     }
   ]
 });

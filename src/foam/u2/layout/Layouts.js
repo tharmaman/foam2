@@ -1,28 +1,12 @@
 foam.CLASS({
   package: 'foam.u2.layout',
-  name: 'Rows',
+  name: 'AbstractLayout',
   extends: 'foam.u2.Element',
-
-  requires: [
-    'foam.u2.layout.Row',
-  ],
-
-  documentation: `
-    The parent for a group of rows (laid out vertically)
-  `,
-
-  /**
-   * NOTE: For here we set the flex-direction to column because each Row
-   * is laid out VERTICALLY 
-   */
-  css: `
-    ^ {
-      display: flex;
-      flex-direction: column;
-    }
-  `,
-
   properties: [
+    {
+      class: 'Class',
+      name: 'childCls'
+    },
     {
       class: 'Map',
       name: 'defaultChildConfig',
@@ -36,34 +20,32 @@ foam.CLASS({
       class: 'Enum',
       of: 'foam.u2.layout.AlignmentType',
       name: 'alignmentType',
-      value: foam.u2.layout.AlignmentType.SPACE_BETWEEN,
-    },
-    {
-      class: 'String',
-      name: 'alignmentValue',
-      documentation: `
-        To render the proper CSS for web based on the alignment types enum.
-        Will later be used to also account for mobile.
-      `,
-      expression: function(alignmentType$webFlexProp){
-        return alignmentType$webFlexProp;
-      }
+      value: 'SPACE_BETWEEN'
     }
   ],
 
   methods: [
+    function start(spec, args, slot) {
+      var c = this.SUPER(spec, args, slot);
+      // Force the parent to this because the add() override could cause
+      // the parent not to be this so the user would unknowingly have to
+      // call end() more times.
+      c.parentNode = this;
+      return c;
+    },
+
     /**
      * This expects all child elements to be instances of foam.u2.layout.Col 
      * so we override the add method to enforce this.
      */
     function add() {
       [...arguments].forEach(value => {
-        if ( this.Row.isInstance(value) ) {
+        if ( this.childCls.isInstance(value) ) {
           this.SUPER(value);
         }
         else {
           this
-            .start(this.Row, this.defaultChildConfig)
+            .start(this.childCls, this.defaultChildConfig)
               .start(this.border)
                 .add(value)
               .end()
@@ -75,9 +57,44 @@ foam.CLASS({
 
     function initE() {
       this.SUPER();
+      this
+        .addClass(this.myClass())
+        .style({ 'justify-content': this.alignmentType$.dot('webFlexProp') });
+    }
+  ]
+});
 
-      this.addClass(this.myClass())
-        .style({ 'justify-content': this.alignmentValue$ });
+foam.CLASS({
+  package: 'foam.u2.layout',
+  name: 'Rows',
+  extends: 'foam.u2.layout.AbstractLayout',
+  css: `
+    ^ {
+      display: flex;
+      flex-direction: column;
+    }
+  `,
+  properties: [
+    {
+      name: 'childCls',
+      value: 'foam.u2.layout.Row'
+    }
+  ]
+});
+
+foam.CLASS({
+  package: 'foam.u2.layout',
+  name: 'Cols',
+  extends: 'foam.u2.layout.AbstractLayout',
+  css: `
+    ^ {
+      display: flex;
+    }
+  `,
+  properties: [
+    {
+      name: 'childCls',
+      value: 'foam.u2.layout.Col'
     }
   ]
 });
@@ -121,85 +138,6 @@ foam.CLASS({
 
 foam.CLASS({
   package: 'foam.u2.layout',
-  name: 'Cols',
-  extends: 'foam.u2.Element',
-
-  documentation: `
-    The parent for a group of columns (laid out horizontally)
-  `,
-
-  requires: [
-    'foam.u2.layout.Col',
-  ],
-
-  css: `
-    ^ {
-      display: flex;
-    }
-  `,
-
-  properties: [
-    {
-      class: 'Map',
-      name: 'defaultChildConfig'
-    },
-    {
-      class: 'foam.u2.ViewSpec',
-      name: 'border',
-      value: { class: 'foam.u2.borders.NullBorder' }
-    },
-    {
-      class: 'Enum',
-      of: 'foam.u2.layout.AlignmentType',
-      name: 'alignmentType',
-      value: foam.u2.layout.AlignmentType.SPACE_BETWEEN,
-    },
-    {
-      class: 'String',
-      name: 'alignmentValue',
-      documentation: `
-        To render the proper CSS for web based on the alignment types enum.
-        Will later be used to also account for mobile.
-      `,
-      expression: function(alignmentType$webFlexProp){
-        return alignmentType$webFlexProp;
-      }
-    }
-  ],
-
-  methods: [
-    /**
-     * This expects all child elements to be instances of foam.u2.layout.Col 
-     * so we override the add method to enforce this.
-     */
-    function add() {
-      [...arguments].forEach(value => {
-        if ( this.Col.isInstance(value) ) {
-          this.SUPER(value);
-        }
-        else {
-          this
-            .start(this.Col, this.defaultChildConfig)
-              .start(this.border)
-                .add(value)
-              .end()
-            .end();
-        }
-      })
-      return this;
-    },
-
-    function initE() {
-      this.SUPER();
-
-      this.addClass(this.myClass())
-        .style({ 'justify-content': this.alignmentValue$ });
-    }
-  ]
-});
-
-foam.CLASS({
-  package: 'foam.u2.layout',
   name: 'Col',
   extends: 'foam.u2.Element',
 
@@ -214,8 +152,7 @@ foam.CLASS({
       documentation: `
         Defines how much this specific column will grow (take up space) relative 
         to the other Col elements within its Cols group
-      `,
-      value: 0,
+      `
     },
   ],
   
