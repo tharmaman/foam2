@@ -35,11 +35,13 @@ foam.CLASS({
      */
     function initE() {
       var self = this;
+
       this.SUPER();
       this
         .addClass(this.myClass())
         .add(this.slot(function(sections, data) {
           if ( ! data ) return;
+
           return self.E()
             .start(self.Rows, { defaultChildConfig: { padding: '16px 0' } })
               .forEach(sections, function(s) {
