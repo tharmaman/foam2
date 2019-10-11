@@ -46,6 +46,10 @@ foam.CLASS({
       class: 'String'
     }, 
     {
+      name: 'label',
+      class: 'String'
+    },
+    {
       name: 'icon',
       class: 'Image',
       documentation: `Path to capability icon`
