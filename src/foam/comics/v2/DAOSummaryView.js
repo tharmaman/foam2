@@ -95,6 +95,9 @@ foam.CLASS({
   actions: [
     {
       name: 'edit',
+      isAvailable: function(){
+        // TODO: Check if capability to update
+      },
       code: function() {
         if ( ! this.stack ) return;
         this.stack.push({
@@ -107,6 +110,9 @@ foam.CLASS({
     },
     {
       name: 'delete',
+      isAvailable: function(){
+        // TODO: Check if capability to destroy
+      },
       confirmationRequired: true,
       code: function() {
         this.config.dao.remove(this.data).then(o => {

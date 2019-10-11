@@ -75,6 +75,9 @@ foam.CLASS({
   actions: [
     {
       name: 'create',
+      isAvailable: function(){
+        // TODO: Check if create capabilities or permission
+      },
       code: function() {
         if ( ! this.stack ) return;
         this.stack.push({
