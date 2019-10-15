@@ -103,7 +103,8 @@ foam.CLASS({
     {
       name: 'permissionsGranted',
       class: 'StringArray',
-      documentation: `List of permissions granted by this capability`
+      documentation: `List of permissions granted by this capability`,
+      permissionRequired: true
     },
     {
       name: 'daoKey',
