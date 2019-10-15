@@ -104,7 +104,11 @@ foam.CLASS({
                 .addClass(self.myClass('browse-title'))
                 .add(config$browseTitle)
               .end()
-              .startContext({data: self}).add(self.CREATE).endContext()
+              .startContext({data: self})
+                .add(self.CREATE.clone().copyFrom({
+                  availablePermissions: [`${config.of.name.toLowerCase()}.create`]
+                }))
+              .endContext()
             .end()
             .start(self.CardBorder)
               .style({ position: 'relative' })

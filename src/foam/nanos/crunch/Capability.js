@@ -39,25 +39,45 @@ foam.CLASS({
     'daoKey'
   ],
 
+  sections: [
+    {
+      name: 'basic',
+      title: 'Basic Information'
+    },
+    {
+      name: 'additional',
+      title: 'Additional Information'
+    },
+    {
+      name: 'administrative',
+      help: 'Properties that are used internally by the system.',
+      permissionRequired: true
+    },
+  ],
+
   properties: [
     
     {
       name: 'id',
-      class: 'String'
+      class: 'String',
+      section: 'basic'
     }, 
     {
       name: 'label',
-      class: 'String'
+      class: 'String',
+      section: 'basic'
     },
     {
       name: 'icon',
       class: 'Image',
-      documentation: `Path to capability icon`
+      documentation: `Path to capability icon`,
+      section: 'additional'
     },
     {
       name: 'description',
       class: 'String',
-      documentation: `Description of capability`
+      documentation: `Description of capability`,
+      section: 'basic'
     },
     {
       name: 'notes',
@@ -66,50 +86,59 @@ foam.CLASS({
         class: 'foam.u2.tag.TextArea',
         rows: 12, 
         cols: 120
-      }
+      },
+      section: 'additional'
     },
     {
       name: 'version',
-      class: 'String'
+      class: 'String',
+      section: 'additional'
     },
     {
       name: 'enabled',
       class: 'Boolean',
       value: true,
       documentation: `Capability is ignored by system when enabled is false.
-      user will lose permissions implied by this capability and upper level capabilities will ignore this prerequisite`
+      user will lose permissions implied by this capability and upper level capabilities will ignore this prerequisite`,
+      section: 'basic'
     },
     {
       name: 'visible',
       class: 'Boolean',
-      documentation: `Hide sub-capabilities which aren't top-level and individually selectable. when true, capability is visible to the user`
+      documentation: `Hide sub-capabilities which aren't top-level and individually selectable. when true, capability is visible to the user`,
+      section: 'additional'
     },
     {
       name: 'expiry',
       class: 'DateTime',
-      documentation: `Datetime of when capability is no longer valid`
+      documentation: `Datetime of when capability is no longer valid`,
+      section: 'additional'
     },
     {
       name: 'duration',
       class: 'Int',
       documentation: `To be used in the case where expiry is duration-based, represents the number of DAYS a junction is valid for before expiring.
-      The UserCapabilityJunction object will have its expiry configured to a DateTime based on the lower value of the two, expiry and duration`
+      The UserCapabilityJunction object will have its expiry configured to a DateTime based on the lower value of the two, expiry and duration`,
+      section: 'additional'
     },
     {
       name: 'of',
       class: 'Class',
-      documentation: `Model used to store information required by this credential`
+      documentation: `Model used to store information required by this credential`,
+      section: 'administrative'
     },
     {
       name: 'permissionsGranted',
       class: 'StringArray',
       documentation: `List of permissions granted by this capability`,
-      permissionRequired: true
+      permissionRequired: true,
+      section: 'administrative'
     },
     {
       name: 'daoKey',
       class: 'String',
-      visibility: 'RO'
+      visibility: 'RO',
+      section: 'administrative'
     }
   ],
 
@@ -190,6 +219,9 @@ foam.RELATIONSHIP({
   sourceProperty: {
     createMode: 'HIDDEN',
     section: 'administrative'
+  },
+  targetProperty: {
+    section: 'basic'
   }
 });
 
@@ -199,7 +231,13 @@ foam.RELATIONSHIP({
   cardinality: '*:*',
   forwardName: 'deprecated',
   inverseName: 'deprecating',
-  junctionDAOKey: 'deprecatedCapabilityJunctionDAO'
+  junctionDAOKey: 'deprecatedCapabilityJunctionDAO',
+  sourceProperty: {
+    section: 'administrative'
+  },
+  targetProperty: {
+    section: 'administrative'
+  }
 });
 
 foam.RELATIONSHIP({
@@ -208,5 +246,11 @@ foam.RELATIONSHIP({
   cardinality: '*:*',
   forwardName: 'prerequisites',
   inverseName: 'dependents',
-  junctionDAOKey: 'prerequisiteCapabilityJunctionDAO'
+  junctionDAOKey: 'prerequisiteCapabilityJunctionDAO',
+  sourceProperty: {
+    section: 'basic'
+  },
+  targetProperty: {
+    section: 'additional'
+  }
 });
