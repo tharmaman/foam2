@@ -87,33 +87,6 @@ foam.CLASS({
       javaCode: `
       return checkUser( x, user, permission.getName() );
       `
-    },
-    {
-      name: 'select_',
-      documentation: `
-      Check if the given input string is in the userCapabilityJunctions or implied by a capability in userCapabilityJunctions for the current context user
-      `,
-      javaCode: `
-      System.out.println("It's lit");
-      `
-    },
-    {
-      name: 'find_',
-      documentation: `
-      Check if the given input string is in the userCapabilityJunctions or implied by a capability in userCapabilityJunctions for the current context user
-      `,
-      javaCode: `
-      System.out.println("It's lit");
-      `
-    },
-    {
-      name: 'put_',
-      documentation: `
-      Check if the given input string is in the userCapabilityJunctions or implied by a capability in userCapabilityJunctions for the current context user
-      `,
-      javaCode: `
-      System.out.println("It's lit");
-      `
-    },   
+    }  
   ]
 });
