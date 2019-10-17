@@ -1,2 +1,1 @@
 p({"class":"foam.nanos.crunch.Capability","id":"test"})
-p({"class":"foam.nanos.crunch.Capability","id":"liquidAdmin","label":"Liquid Admin","description":"Default god role on Liquid","permissionsGranted":["transaction.create","account.create","approvalrequest.update","capability.create","capability.update","rule.create","rule.update","menu.read.liquid.capabilities"]})

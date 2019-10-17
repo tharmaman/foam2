@@ -17,6 +17,11 @@ foam.CLASS({
     'stack',
     'auth'
   ],
+  
+  axioms: [
+    foam.pattern.Faceted.create()
+  ],
+
   requires: [
     'foam.comics.v2.DAOBrowserView',
     'foam.u2.borders.CardBorder',
