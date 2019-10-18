@@ -214,7 +214,6 @@ foam.RELATIONSHIP({
   forwardName: 'capabilities',
   inverseName: 'users',
   sourceProperty: {
-    createMode: 'HIDDEN',
     section: 'administrative'
   },
   targetProperty: {

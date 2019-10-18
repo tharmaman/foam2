@@ -118,7 +118,8 @@ foam.CLASS({
       class: 'Boolean',
       name: 'loginEnabled',
       documentation: 'Determines whether the User can login to the platform.',
-      permissionRequired: true,
+      readPermissionRequired: true,
+      writePermissionRequired: true,
       value: true,
       section: 'administrative'
     },
@@ -223,7 +224,8 @@ foam.CLASS({
       class: 'Boolean',
       name: 'emailVerified',
       documentation: 'Determines whether the email address of the User is valid.',
-      permissionRequired: true,
+      readPermissionRequired: true,
+      writePermissionRequired: true,
       section: 'administrative'
     },
     {
@@ -301,7 +303,6 @@ foam.CLASS({
       factory: function() {
         return this.Address.create();
       },
-      view: { class: 'foam.u2.detail.VerticalDetailView' },
       section: 'personal'
     },
     {
@@ -442,15 +443,15 @@ foam.CLASS({
       code: function label() {
         if ( this.legalName ) return this.legalName;
         if ( this.lastName && this.firstName ) return this.firstName + ' ' + this.lastName;
-        if ( this.lastName && ! this.firstName ) return this.lastName;
-        if ( ! this.lastName && this.firstName ) return this.firstName;
+        if ( this.lastName ) return this.lastName;
+        if ( this.firstName ) return this.firstName;
         return '';
       },
       javaCode: `
         if ( ! SafetyUtil.isEmpty(this.getLegalName()) ) return this.getLegalName();
-        if ( SafetyUtil.isEmpty(this.getLastName()) && SafetyUtil.isEmpty(this.getFirstName()) ) return this.getFirstName() + " " + this.getLastName();
-        if ( SafetyUtil.isEmpty(this.getLastName()) && ! SafetyUtil.isEmpty(this.getFirstName()) ) return this.getLastName();
-        if ( ! SafetyUtil.isEmpty(this.getLastName()) && SafetyUtil.isEmpty(this.getFirstName()) ) return this.getFirstName();
+        if ( ! SafetyUtil.isEmpty(this.getLastName()) && ! SafetyUtil.isEmpty(this.getFirstName()) ) return this.getFirstName() + " " + this.getLastName();
+        if ( ! SafetyUtil.isEmpty(this.getLastName()) ) return this.getLastName();
+        if ( ! SafetyUtil.isEmpty(this.getFirstName()) ) return this.getFirstName();
         return "";
       `
     },
