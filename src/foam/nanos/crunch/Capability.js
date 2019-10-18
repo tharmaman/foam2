@@ -31,7 +31,6 @@ foam.CLASS({
 
   tableColumns: [
     "label",
-    'id',
     'description',
     'enabled',
   ],
