@@ -30,13 +30,10 @@ foam.CLASS({
   ],
 
   tableColumns: [
+    "label",
     'id',
     'description',
-    'version',
     'enabled',
-    'visible',
-    'expiry',
-    'daoKey'
   ],
 
   sections: [
