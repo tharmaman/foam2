@@ -308,6 +308,20 @@ foam.CLASS({
           return foundNode;
         }
       }
+    },
+
+    function getDescendants(){
+      var allDescendants = [];
+      this.getAllDescendants(allDescendants);
+      return allDescendants;
+    },
+
+    function getAllDescendants(descendantArray){
+      descendantArray.push([this.data.id, this.data.name])
+
+      for (var i = 0; i < this.childNodes.length; i++) {
+        this.childNodes[i].getAllDescendants(descendantArray);
+      }
     }
   ]
 })

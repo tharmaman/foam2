@@ -20,22 +20,26 @@
    ],
 
    properties: [
-     [ 'nodeWidth',  155 ],
-     [ 'nodeHeight',  60 ],
-     [ 'lineWidth',   0.5 ],
-     [ 'padding',     30 ],
-     [ 'color', 'white'],
-     {
-       name: 'data'
-     },
-     {
-       name: 'relationship'
-     },
-     'root',
-     {
-       name: 'formatNode',
-       value: function() {}
-     }
+    [ 'nodeWidth',  155 ],
+    [ 'nodeHeight',  60 ],
+    [ 'lineWidth',   0.5 ],
+    [ 'padding',     30 ],
+    [ 'color', 'white'],
+    {
+      name: 'data'
+    },
+    {
+      name: 'relationship'
+    },
+    {
+      name: 'accounts',
+      factory: function () { return []; }
+    },
+    'root',
+    {
+      name: 'formatNode',
+      value: function() {}
+    }
    ],
 
    topics: [
