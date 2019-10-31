@@ -31,10 +31,6 @@
     {
       name: 'relationship'
     },
-    {
-      name: 'accounts',
-      factory: function () { return []; }
-    },
     'root',
     {
       name: 'formatNode',
