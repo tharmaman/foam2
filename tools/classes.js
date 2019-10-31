@@ -65,6 +65,7 @@ var classes = [
   'foam.mlang.Constant',
   'foam.mlang.ArrayConstant',
   'foam.mlang.expr.Dot',
+  'foam.mlang.expr.PropertyExpr',
   'foam.mlang.PredicatedExpr',
   'foam.mlang.ContextObject',
   'foam.mlang.CurrentTime',
@@ -183,6 +184,7 @@ var classes = [
   'foam.nanos.auth.GroupPermissionJunctionRefinement',
   'foam.nanos.auth.CheckPermissionsSink',
   'foam.nanos.auth.Group',
+  'foam.nanos.auth.PasswordPolicy',
   'foam.nanos.auth.CreatedAware',
   'foam.nanos.auth.CreatedAwareDAO',
   'foam.nanos.auth.CreatedByAware',
@@ -199,6 +201,9 @@ var classes = [
   'foam.nanos.auth.Phone',
   'foam.nanos.auth.HumanNameTrait',
   'foam.nanos.auth.User',
+  'foam.nanos.auth.PriorPassword',
+  'foam.nanos.auth.ruler.AddPasswordHistoryAction',
+  'foam.nanos.auth.PasswordPolicyTest',
   'foam.nanos.auth.Country',
   'foam.nanos.auth.AuthService',
   'foam.nanos.auth.UserUserJunction',
@@ -381,8 +386,9 @@ var classes = [
   'foam.nanos.http.DefaultHttpParameters',
   'foam.nanos.http.HttpParameters',
   'foam.nanos.dig.DIG',
-  'foam.nanos.dig.DUG',
   'foam.nanos.dig.SUGAR',
+  'foam.nanos.dig.DUGRule',
+  'foam.nanos.dig.DUGRuleAction',
 
   'foam.nanos.jetty.HttpServer',
   'foam.nanos.servlet.Servlet',
@@ -424,6 +430,7 @@ var classes = [
   'foam.nanos.ruler.RuleHistory',
   'foam.nanos.ruler.RuleHistoryStatus',
   'foam.nanos.ruler.UpdateRulesListSink',
+  'foam.nanos.ruler.predicate.PropertyChangePredicate',
   'foam.comics.SearchMode',
 
   // Support Files
@@ -478,7 +485,9 @@ var classes = [
   'foam.nanos.crunch.RemoveJunctionsOnUserRemoval',
   //authservice
   'foam.nanos.auth.CapabilityAuthService',
-
+  //Unit
+  'foam.core.Unit',
+  'foam.core.Currency',
   // Strategy
   'foam.strategy.StrategyReference',
   'foam.strategy.StrategizerService',
