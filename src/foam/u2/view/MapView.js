@@ -87,6 +87,7 @@ foam.CLASS({
         .add(this.slot(function(data) {
           return self.Rows.create()
             .forEach(Object.entries(data || {}), function(e) {
+              var oldKey = e[0];
               var row = self.KeyValueRow.create({ key: e[0], value: e[1] });
               this
                 .startContext({ data: row })
@@ -104,7 +105,11 @@ foam.CLASS({
                     })
                   .end()
                 .endContext();
-              row.onDetach(row.sub(self.updateData));
+              row.onDetach(row.sub(function() {
+                delete self.data[oldKey];
+                self.data[row.key] = row.value;
+                oldKey = row.key;
+              }));
             });
         }))
         .startContext({ data: this }).add(this.ADD_ROW).endContext();
