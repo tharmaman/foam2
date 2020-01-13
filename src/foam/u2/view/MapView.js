@@ -13,6 +13,7 @@ foam.CLASS({
     'foam.u2.layout.Rows'
   ],
   exports: [
+    'as view',
     'mode',
     'updateData'
   ],
@@ -63,10 +64,9 @@ foam.CLASS({
             return mode === foam.u2.DisplayMode.RW;
           },
           code: function() {
-            var d2 = foam.Object.clone(this.data);
+            var d2 = foam.Object.clone(this.__context__.data);
             delete d2[this.key];
-            this.data = d2;
-            this.updateData();
+            this.__context__.view.data = d2;
           }
         }
       ]
