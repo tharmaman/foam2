@@ -74,8 +74,7 @@ foam.CLASS({
 
           if ( (
               ( lifecycleAwareObj.getLifecycleState() == LifecycleState.DELETED || deletedAwareObj.getDeleted() == true ) && ! canReadDeleted(x) ) || 
-              ( lifecycleAwareObj.getLifecycleState() == LifecycleState.REJECTED && ! canReadRejected(x) ) || 
-              ( lifecycleAwareObj.getLifecycleState() == LifecycleState.PENDING && ! canReadPending(x) ) 
+              ( lifecycleAwareObj.getLifecycleState() == LifecycleState.REJECTED && ! canReadRejected(x) ) 
             ) {
             return null;
           }
@@ -84,8 +83,7 @@ foam.CLASS({
 
         if ( 
             ( lifecycleAwareObj.getLifecycleState() == LifecycleState.DELETED && ! canReadDeleted(x) ) ||  
-            ( lifecycleAwareObj.getLifecycleState() == LifecycleState.REJECTED && ! canReadRejected(x) ) || 
-            ( lifecycleAwareObj.getLifecycleState() == LifecycleState.PENDING && ! canReadPending(x) ) 
+            ( lifecycleAwareObj.getLifecycleState() == LifecycleState.REJECTED && ! canReadRejected(x) )
           ) {
           return null;
         }
