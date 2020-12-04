@@ -440,6 +440,9 @@
       section: 'systemInformation',
       readPermissionRequired: true,
       writePermissionRequired: true,
+      javaFactory: `
+        TODO: WIP
+      `,
       factory: function() {
         var key = this.daoKey;
         var X = this.ctrl.__subContext__;
@@ -644,7 +647,7 @@
              return false;
         }
 
-        if ( self.__subContext__[self.daoKey_] ) {
+        if ( self.__subContext__[daoKey] ) {
           var property = self.__subContext__[self.daoKey_].of.ID;
           var objId = property.adapt.call(property, self.objId, self.objId, property);
           return self.__subContext__[this.daoKey_]
@@ -667,6 +670,8 @@
               }
             });
         }
+
+        console.warn("Invalid key", daoKey);
       },
       code: function(X) {
         var self = this;
